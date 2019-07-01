@@ -13,7 +13,7 @@ function init() {
     ship.positionX + ship.width / 2,
     ship.positionY - ship.height,
     10,
-    2
+    0
   );
 
   game = new Game({ ctx: ctx, ship: ship, ball: ball });

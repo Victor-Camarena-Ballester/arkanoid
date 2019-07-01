@@ -8,6 +8,7 @@ class Game {
   }
 
   startGame() {
+    this._addListeners();
     this._createBlocks();
     this.intervalGame = window.requestAnimationFrame(
       this._refreshScreen.bind(this)
@@ -27,7 +28,7 @@ class Game {
       this.ship.width,
       this.ship.height
     );
-    this.ctx.fillStyle = "#FF0000";
+    this.ctx.fillStyle = "#2D00FF";
     this.ctx.fill();
     this.ctx.closePath();
   }
@@ -41,7 +42,7 @@ class Game {
         block.width,
         block.height
       );
-      this.ctx.fillStyle = "#FF0000";
+      this.ctx.fillStyle = "#FF6E00";
       this.ctx.fill();
       this.ctx.closePath();
     });
@@ -62,8 +63,18 @@ class Game {
 
     this._checkCollisionWalls();
 
+    if (this.ball.directionX === 0) {
+      this.ball.directionX = 1;
+    }
+    if (this.ball.directionY === 0) {
+      this.ball.directionY = 1;
+    }
+
     this.ball.positionX -= this.ball.directionX * this.ball.speed;
     this.ball.positionY -= this.ball.directionY * this.ball.speed;
+
+    this._checkCollisionShip();
+    this._checkLiveLost();
   }
 
   _refreshScreen() {
@@ -111,5 +122,33 @@ class Game {
       this.ball.directionY = -this.ball.directionY;
     }
   }
-  _checkCollisionShip() {}
+  _checkCollisionShip() {
+    let exactPointX = this.ball.positionX + this.ball.speed + this.ball.radius;
+    let exactPointY = this.ball.positionY + this.ball.speed + this.ball.radius;
+
+    if (
+      exactPointX >= this.ship.positionX &&
+      exactPointX <= this.ship.positionX + this.ship.width &&
+      exactPointY >= this.ship.positionY
+    ) {
+      this.ball.directionY = -this.ball.directionY;
+    }
+  }
+  _checkLiveLost() {
+    if (this.ball.positionY > this.ship.positionY) {
+      //alert("Loooser!");
+    }
+  }
+
+  _shotBall() {
+    this.ball.speed = 3;
+  }
+  _moveShip(e) {
+    this.ship.positionX = e.clientX;
+  }
+
+  _addListeners() {
+    document.addEventListener("click", this._shotBall.bind(this));
+    document.body.addEventListener("mousemove", this._moveShip.bind(this));
+  }
 }
