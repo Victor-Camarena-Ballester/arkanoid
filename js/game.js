@@ -35,16 +35,18 @@ class Game {
 
   _printBlocks() {
     this.blocks.forEach(block => {
-      this.ctx.beginPath();
-      this.ctx.rect(
-        block.positionX,
-        block.positionY,
-        block.width,
-        block.height
-      );
-      this.ctx.fillStyle = "#FF6E00";
-      this.ctx.fill();
-      this.ctx.closePath();
+      if (block.alive) {
+        this.ctx.beginPath();
+        this.ctx.rect(
+          block.positionX,
+          block.positionY,
+          block.width,
+          block.height
+        );
+        this.ctx.fillStyle = "#FF6E00";
+        this.ctx.fill();
+        this.ctx.closePath();
+      }
     });
   }
 
@@ -64,10 +66,10 @@ class Game {
     this._checkCollisionWalls();
 
     if (this.ball.directionX === 0) {
-      this.ball.directionX = 1;
+      this.ball.directionX = -1;
     }
     if (this.ball.directionY === 0) {
-      this.ball.directionY = 1;
+      this.ball.directionY = -1;
     }
 
     this.ball.positionX -= this.ball.directionX * this.ball.speed;
@@ -79,6 +81,7 @@ class Game {
 
   _refreshScreen() {
     this._cleanScreen();
+    this._checkCollisionsBlocks();
     this._printBall();
     this._printShip();
     this._printBlocks();
@@ -90,7 +93,7 @@ class Game {
 
   _createBlocks() {
     let rows = 4;
-    let columns = 500 / 50;
+    let columns = 500 / 100;
     let spaceBetween = 10;
 
     for (let i = 0; i < rows; i++) {
@@ -134,6 +137,76 @@ class Game {
       this.ball.directionY = -this.ball.directionY;
     }
   }
+
+  _checkCollisionsBlocks() {
+    let exactPointTopX =
+      this.ball.positionX - this.ball.speed - this.ball.radius;
+    let exactPointTopY =
+      this.ball.positionY - this.ball.speed - this.ball.radius;
+    let exactPointBottomX =
+      this.ball.positionX + this.ball.speed + this.ball.radius;
+    let exactPointBottomY =
+      this.ball.positionY + this.ball.speed + this.ball.radius;
+
+    let crashed = false;
+    this.blocks.forEach((block, index) => {
+      if (block.alive) {
+        //Match the collission with the bottom of the block
+        let topY = block.positionY;
+        let bottomY = block.positionY + block.height;
+        let leftX = block.positionX;
+        let rigthX = block.positionX + block.width;
+
+        if (
+          exactPointTopY < bottomY &&
+          exactPointTopX >= leftX &&
+          exactPointTopX <= rigthX &&
+          !crashed
+        ) {
+          block.alive = false;
+          this.ball.directionY = -this.ball.directionY;
+          crashed = true;
+        }
+
+        //Match the collission with the Top of the block
+        if (
+          exactPointBottomY < topY &&
+          exactPointTopX >= leftX &&
+          exactPointTopX <= rigthX &&
+          !crashed
+        ) {
+          block.alive = false;
+          this.ball.directionY = -this.ball.directionY;
+          crashed = true;
+        }
+
+        //Match the collission with the Left of the block
+        if (
+          exactPointTopX > leftX &&
+          exactPointTopY >= topY &&
+          exactPointBottomY <= bottomY &&
+          !crashed
+        ) {
+          block.alive = false;
+          this.ball.directionX = -this.ball.directionX;
+          crashed = true;
+        }
+
+        //Match the collission with the Right of the block
+        if (
+          exactPointTopX < rigthX &&
+          exactPointTopY >= topY &&
+          exactPointBottomY <= bottomY &&
+          !crashed
+        ) {
+          block.alive = false;
+          this.ball.directionX = -this.ball.directionX;
+          crashed = true;
+        }
+      }
+    });
+  }
+
   _checkLiveLost() {
     if (this.ball.positionY > this.ship.positionY) {
       //alert("Loooser!");
@@ -141,10 +214,12 @@ class Game {
   }
 
   _shotBall() {
-    this.ball.speed = 3;
+    this.ball.speed = -2;
   }
   _moveShip(e) {
-    this.ship.positionX = e.clientX;
+    if (e.clientX + this.ship.width < 500 && e.clientX > 0) {
+      this.ship.positionX = e.clientX;
+    }
   }
 
   _addListeners() {
