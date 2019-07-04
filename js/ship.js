@@ -5,7 +5,6 @@ class Ship {
     this.width = width;
     this.height = height;
     this.speed = speed;
+    this.lives = 3;
   }
-  moveLeft() {}
-  moveRigth() {}
 }

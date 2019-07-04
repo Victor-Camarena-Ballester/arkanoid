@@ -6,5 +6,6 @@ class Ball {
     this.directionY = speed;
     this.radius = radius;
     this.speed = speed;
+    this.moving = false;
   }
 }
