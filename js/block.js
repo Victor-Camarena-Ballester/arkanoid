@@ -1,12 +1,21 @@
 class Block {
-  constructor(positionX, positionY, width, height, divScore) {
+  constructor(
+    positionX,
+    positionY,
+    width,
+    height,
+    strength,
+    divScore,
+    present
+  ) {
     this.positionX = positionX;
     this.positionY = positionY;
     this.width = width;
     this.height = height;
     this.alive = true;
-    this.strength = 1;
+    this.strength = strength;
     this.divScore = divScore;
+    this.present = present;
   }
   restStrength() {
     this.strength -= 1;

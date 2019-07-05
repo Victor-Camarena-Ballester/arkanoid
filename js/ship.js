@@ -6,5 +6,19 @@ class Ship {
     this.height = height;
     this.speed = speed;
     this.lives = 3;
+    this.canShot = false;
+  }
+
+  grow() {
+    this.width += 20;
+  }
+  decrease() {
+    this.width -= 20;
+  }
+  shotOn() {
+    this.canShot = true;
+  }
+  shotOff() {
+    this.canShot = false;
   }
 }

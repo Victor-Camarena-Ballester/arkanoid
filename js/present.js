@@ -1,10 +1,15 @@
 class Present {
-  constructor(positionX, positionY, width, heigth, type) {
-    this.positionX = positionX;
-    this.positionY = positionY;
-    this.width = width;
-    this.heigth = heigth;
-    this.type = type;
-    this.visible = false;
+  constructor(options) {
+    this.positionX = undefined;
+    this.positionY = undefined;
+    this.width = undefined;
+    this.height = undefined;
+    this.type = options.type;
+    this.speed = options.speed;
+    this.color = options.color;
+    this.used = false;
+  }
+  moveDown() {
+    this.positionY += this.speed;
   }
 }
