@@ -1,4 +1,4 @@
-var presentsArr = [
+const presentsArr = [
   { type: "n", speed: 0, color: "" },
   { type: "s+", speed: 5, color: "#FF0000" },
   { type: "s-", speed: 3, color: "#D15BF3" },
