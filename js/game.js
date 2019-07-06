@@ -159,8 +159,13 @@ class Game {
       this.stage.ball.directionY = -this.stage.ball.directionY;
     }
     if (this.stage.ball.positionY > this.canvas.height) {
-      alert("loose");
-      this.stage.createBall();
+      this.lives -= 1;
+      if (this.lives === 0) {
+        //GameOver
+      } else {
+        document.getElementById("lives").innerHTML = this.lives;
+        this.stage.createBall();
+      }
     }
   }
 
@@ -208,6 +213,17 @@ class Game {
     });
   }
 
+  _checkAllBlocksCrashed() {
+    let count = this.stage.blocks.filter(block => {
+      return block.strength > 0;
+    });
+
+    if (count.length === 0) {
+      this.stage = new Stage(this.canvas, 6, 100);
+      this.stage.createStage();
+    }
+  }
+
   _checkCollisionsBlocks() {
     let exactPointTopX =
       this.stage.ball.positionX -
@@ -246,6 +262,7 @@ class Game {
         }
       }
     });
+    this._checkAllBlocksCrashed();
   }
 
   _checkLiveLost() {}

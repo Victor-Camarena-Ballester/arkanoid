@@ -14,6 +14,8 @@ class Stage {
     this._createShip();
     this._createBall();
     this._createBlocks();
+    this.stageInterval = undefined;
+    this.stageInterval = setInterval(this._startChronometer.bind(this), 1000);
     this._startChronometer();
   }
   createBall() {
@@ -39,7 +41,7 @@ class Stage {
   }
 
   _createBlocks() {
-    let rows = 4;
+    let rows = this.rows;
     let columns = this.canvas.width / 100;
     let spaceBetween = 10;
 
