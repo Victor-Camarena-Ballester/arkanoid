@@ -7,7 +7,10 @@ class Game {
     this.presentsInGame = [];
     this.lives = 3;
     this.stageNumber = 1;
+    this.showlives = options.showlives;
     this.refreshTimer = options.refreshTimer;
+    this.win = options.win;
+    this.loose = options.loose;
   }
 
   _setCurrentStage() {
@@ -15,13 +18,20 @@ class Game {
       return stage.stageNum === this.stageNumber;
     });
 
+    if (!actualStage) {
+      this.stopGame();
+      this.win();
+      return;
+    }
+
     this.stage = new Stage(
       this.canvas,
       actualStage.options.rows,
       actualStage.options.columnWidth,
       actualStage.options.speedBall,
       actualStage.options.countDown,
-      this.refreshTimer
+      this.refreshTimer,
+      this.loose
     );
     this.stage.createStage();
   }
@@ -36,6 +46,10 @@ class Game {
   }
 
   pauseGame() {
+    this.stage.pauseChrono();
+    this.intervalGame = undefined;
+  }
+  stopGame() {
     this.stage.pauseChrono();
     this.intervalGame = undefined;
   }
@@ -178,9 +192,10 @@ class Game {
     if (this.stage.ball.positionY > this.canvas.height) {
       this.lives -= 1;
       if (this.lives === 0) {
-        //GameOver
+        this.stopGame();
+        this.loose();
       } else {
-        document.getElementById("lives").innerHTML = this.lives;
+        this.showlives(this.lives);
         this.stage.createBall();
       }
     }
@@ -236,7 +251,7 @@ class Game {
     });
 
     if (count.length === 0) {
-      this.stageNumber += this.stageNumber;
+      this.stageNumber += 1;
       this._setCurrentStage();
     }
   }
@@ -282,16 +297,16 @@ class Game {
     this._checkAllBlocksCrashed();
   }
 
-  _checkLiveLost() {}
-
   _shotBall() {
     this.stage.shotBall();
   }
 
   _moveShip(e) {
     if (this.intervalGame != undefined) {
-      if (e.clientX + this.stage.ship.width < 500 && e.clientX > 0) {
-        //this.ship.positionY = e.clientY;
+      if (
+        e.clientX + this.stage.ship.width < this.canvas.width &&
+        e.clientX > 0
+      ) {
         this.stage.ship.positionX = e.clientX;
       }
       if (!this.stage.ball.moving) {
@@ -348,7 +363,7 @@ class Game {
   }
 
   _addListeners() {
-    document.addEventListener("click", this._shotBall.bind(this));
+    this.canvas.addEventListener("click", this._shotBall.bind(this));
     document.body.addEventListener("mousemove", this._moveShip.bind(this));
     document.body.addEventListener(
       "keypress",

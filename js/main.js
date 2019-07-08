@@ -12,14 +12,29 @@ function init() {
 function refreshTimer(time) {
   document.getElementById("chronometer").innerHTML = time;
 }
+function loose() {
+  playscreen.classList.toggle("notdisplay");
+  gameoverscreen.classList.toggle("notdisplay");
+}
+function win() {
+  playscreen.classList.toggle("notdisplay");
+  winscreen.classList.toggle("notdisplay");
+}
+function showlives(livesNumber) {
+  document.getElementById("lives").innerHTML = livesNumber;
+}
 
 function play() {
-  let div;
+  welcomescreen.classList.toggle("notdisplay");
+  playscreen.classList.toggle("notdisplay");
 
   const game = new Game({
     ctx: ctx,
     canvas: canvas,
-    refreshTimer: refreshTimer
+    refreshTimer: refreshTimer,
+    showlives: showlives,
+    win: win,
+    loose: loose
   });
 
   game.startGame();

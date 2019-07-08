@@ -1,5 +1,13 @@
 class Stage {
-  constructor(canvas, rows, columnWidth, speedBall, countDown, refreshTimer) {
+  constructor(
+    canvas,
+    rows,
+    columnWidth,
+    speedBall,
+    countDown,
+    refreshTimer,
+    loose
+  ) {
     this.canvas = canvas;
     this.rows = rows;
     this.blocks = [];
@@ -10,6 +18,7 @@ class Stage {
     this.speedBall = speedBall;
     this.columnWidth = columnWidth;
     this.refreshTimer = refreshTimer;
+    this.loose = loose;
   }
 
   createStage() {
@@ -114,13 +123,15 @@ class Stage {
     seconds = seconds < 10 ? "0" + seconds : seconds;
 
     if (--this.countDown < 0) {
-      alert("looser!");
+      this.pauseChrono();
+      this.loose();
+    } else {
+      this.refreshTimer(minutes + ":" + seconds);
     }
-
-    this.refreshTimer(minutes + ":" + seconds);
   }
 
   reestartChrono() {
+    this.pauseChrono();
     this.stageInterval = setInterval(this._startChronometer.bind(this), 1000);
   }
 
