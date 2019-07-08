@@ -1,13 +1,15 @@
 class Stage {
-  constructor(canvas, rows, columns) {
+  constructor(canvas, rows, columnWidth, speedBall, countDown, refreshTimer) {
     this.canvas = canvas;
     this.rows = rows;
-    this.columns = columns;
     this.blocks = [];
     this.ship = undefined;
     this.ball = undefined;
-    this.countDown = 60 * 5;
+    this.countDown = countDown;
     this.stageInterval = undefined;
+    this.speedBall = speedBall;
+    this.columnWidth = columnWidth;
+    this.refreshTimer = refreshTimer;
   }
 
   createStage() {
@@ -18,9 +20,11 @@ class Stage {
     this.stageInterval = setInterval(this._startChronometer.bind(this), 1000);
     this._startChronometer();
   }
+
   createBall() {
     this._createBall();
   }
+
   _createShip() {
     this.ship = new Ship(
       this.canvas.width / 2 - 50,
@@ -42,16 +46,16 @@ class Stage {
 
   _createBlocks() {
     let rows = this.rows;
-    let columns = this.canvas.width / 100;
+    let columns = parseInt((this.canvas.width - 10) / this.columnWidth);
     let spaceBetween = 10;
 
     let divScore = document.getElementById("score");
 
     for (let i = 0; i < rows; i++) {
       for (let c = 0; c < columns; c++) {
-        let blockPositionX = c * 100 + spaceBetween;
+        let blockPositionX = c * this.columnWidth + spaceBetween;
         let blockPositionY = i * 30 + spaceBetween;
-        let blockWidth = 100 - spaceBetween;
+        let blockWidth = this.columnWidth - spaceBetween;
         let blockHeight = 30 - spaceBetween;
 
         let newPresent = new Present(
@@ -92,6 +96,13 @@ class Stage {
     }
   }
 
+  shotBall() {
+    if (!this.ball.moving) {
+      this.ball.speed = this.speedBall;
+      this.ball.moving = true;
+    }
+  }
+
   _startChronometer() {
     let minutes;
     let seconds;
@@ -106,11 +117,13 @@ class Stage {
       alert("looser!");
     }
 
-    document.getElementById("chronometer").innerHTML = minutes + ":" + seconds;
+    this.refreshTimer(minutes + ":" + seconds);
   }
+
   reestartChrono() {
     this.stageInterval = setInterval(this._startChronometer.bind(this), 1000);
   }
+
   pauseChrono() {
     clearInterval(this.stageInterval);
     this.stageInterval = undefined;

@@ -6,12 +6,29 @@ class Game {
     this.stage = undefined;
     this.presentsInGame = [];
     this.lives = 3;
+    this.stageNumber = 1;
+    this.refreshTimer = options.refreshTimer;
+  }
+
+  _setCurrentStage() {
+    let actualStage = stagesArr.find(stage => {
+      return stage.stageNum === this.stageNumber;
+    });
+
+    this.stage = new Stage(
+      this.canvas,
+      actualStage.options.rows,
+      actualStage.options.columnWidth,
+      actualStage.options.speedBall,
+      actualStage.options.countDown,
+      this.refreshTimer
+    );
+    this.stage.createStage();
   }
 
   startGame() {
     this._addListeners();
-    this.stage = new Stage(this.canvas, 4, 100);
-    this.stage.createStage();
+    this._setCurrentStage();
 
     this.intervalGame = window.requestAnimationFrame(
       this._refreshScreen.bind(this)
@@ -219,8 +236,8 @@ class Game {
     });
 
     if (count.length === 0) {
-      this.stage = new Stage(this.canvas, 6, 100);
-      this.stage.createStage();
+      this.stageNumber += this.stageNumber;
+      this._setCurrentStage();
     }
   }
 
@@ -268,10 +285,7 @@ class Game {
   _checkLiveLost() {}
 
   _shotBall() {
-    if (!this.stage.ball.moving) {
-      this.stage.ball.speed = 3;
-      this.stage.ball.moving = true;
-    }
+    this.stage.shotBall();
   }
 
   _moveShip(e) {
