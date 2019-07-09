@@ -6,7 +6,7 @@ class Stage {
     speedBall,
     countDown,
     refreshTimer,
-    loose
+    gameOver
   ) {
     this.canvas = canvas;
     this.rows = rows;
@@ -18,7 +18,7 @@ class Stage {
     this.speedBall = speedBall;
     this.columnWidth = columnWidth;
     this.refreshTimer = refreshTimer;
-    this.loose = loose;
+    this.gameOver = gameOver;
   }
 
   createStage() {
@@ -124,7 +124,7 @@ class Stage {
 
     if (--this.countDown < 0) {
       this.pauseChrono();
-      this.loose();
+      this.gameOver();
     } else {
       this.refreshTimer(minutes + ":" + seconds);
     }

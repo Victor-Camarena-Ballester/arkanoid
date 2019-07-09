@@ -31,7 +31,7 @@ class Game {
       actualStage.options.speedBall,
       actualStage.options.countDown,
       this.refreshTimer,
-      this.loose
+      this.gameOver
     );
     this.stage.createStage();
   }
@@ -49,7 +49,8 @@ class Game {
     this.stage.pauseChrono();
     this.intervalGame = undefined;
   }
-  stopGame() {
+
+  gameOver() {
     this.stage.pauseChrono();
     this.intervalGame = undefined;
   }
@@ -66,15 +67,34 @@ class Game {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
+  _printField() {
+    this.ctx.drawImage(
+      imgField,
+      0,
+      0,
+      191,
+      230,
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    );
+  }
   _printShip() {
     this.ctx.beginPath();
-    this.ctx.rect(
+
+    this.ctx.drawImage(
+      imgShip,
+      0,
+      0,
+      50,
+      8,
       this.stage.ship.positionX,
       this.stage.ship.positionY,
       this.stage.ship.width,
       this.stage.ship.height
     );
-    this.ctx.fillStyle = "#2D00FF";
+
     this.ctx.fill();
     this.ctx.closePath();
   }
@@ -107,14 +127,17 @@ class Game {
     this.presentsInGame.forEach(present => {
       if (present.type != "n") {
         this.ctx.beginPath();
-        this.ctx.rect(
+        this.ctx.drawImage(
+          present.imageUrl,
+          0,
+          0,
+          16,
+          7,
           present.positionX,
           present.positionY,
           present.width,
           present.height
         );
-        this.ctx.fillStyle = present.color;
-        this.ctx.fill();
         this.ctx.closePath();
         present.moveDown();
       }
@@ -150,6 +173,7 @@ class Game {
   _refreshScreen() {
     this._cleanScreen();
     this._checkAllCollissions();
+    this._printField();
     this._printBall();
     this._printShip();
     this._printBlocks();
@@ -177,7 +201,7 @@ class Game {
       this.stage.ball.positionX +
         this.stage.ball.speed +
         this.stage.ball.radius >
-        500
+        this.canvas.width
     ) {
       this.stage.ball.directionX = -this.stage.ball.directionX;
     }
@@ -192,7 +216,7 @@ class Game {
     if (this.stage.ball.positionY > this.canvas.height) {
       this.lives -= 1;
       if (this.lives === 0) {
-        this.stopGame();
+        this.gameOver();
         this.loose();
       } else {
         this.showlives(this.lives);
@@ -251,6 +275,7 @@ class Game {
     });
 
     if (count.length === 0) {
+      this.stage.pauseChrono();
       this.stageNumber += 1;
       this._setCurrentStage();
     }

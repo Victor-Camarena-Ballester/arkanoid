@@ -8,6 +8,7 @@ class Present {
     this.speed = options.speed;
     this.color = options.color;
     this.used = false;
+    this.imageUrl = options.imageUrl;
   }
   moveDown() {
     this.positionY += this.speed;
