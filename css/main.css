@@ -1,17 +1,82 @@
-.header {
-  display: flex;
-  justify-content: space-between;
-  width: 500px;
+@font-face {
+  font-family: MyGame;
+  src: url(../font/Gameplay.ttf);
 }
+
+html,
+body {
+  height: 100%;
+}
+body {
+  background-color: black;
+}
+
 #lives {
   display: inline-block;
 }
 #score {
   display: inline-block;
 }
-#myGame {
-  border: 1px solid aqua;
-}
+
 .notdisplay {
   display: none;
+}
+#button {
+  color: white;
+}
+#welcomescreen {
+  text-align: center;
+  padding-top: 300px;
+}
+#welcomescreen img {
+  width: 600px;
+}
+.header {
+  color: white;
+}
+#playscreen {
+  text-align: center;
+  background: url("../images/background.jpg") no-repeat center;
+  height: 100%;
+}
+#myGame {
+  margin-top: 115px;
+}
+#button {
+  font-family: MyGame;
+  font-size: 30px;
+}
+.pause {
+  position: relative;
+  top: 100p;
+  background-color: black;
+  color: white;
+  width: 590px;
+  display: inline-block;
+  top: -360px;
+}
+.header {
+  display: inline-block;
+  vertical-align: top;
+  /* margin-top: 250px; */
+  /* margin-left: 30px; */
+  color: red;
+  font-size: 30px;
+  font-family: MyGame;
+}
+.header-background {
+  background-color: black;
+  /* height: 300px; */
+  border-radius: 10px;
+}
+#scoretable {
+  display: flex;
+  justify-content: space-around;
+  width: 600px;
+  padding: 5px;
+}
+#timetable {
+  font-size: 30px;
+  font-family: MyGame;
+  color: #ffff;
 }

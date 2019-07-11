@@ -24,7 +24,17 @@ function win() {
 function showlives(livesNumber) {
   document.getElementById("lives").innerHTML = livesNumber;
 }
-
+function pause() {
+  let playScreenDiv = document.getElementById("playscreen");
+  let pauseDiv = document.createElement("div");
+  pauseDiv.innerText = "PAUSED";
+  pauseDiv.setAttribute("class", "pause");
+  playScreenDiv.appendChild(pauseDiv);
+}
+function reestart() {
+  let pauseDiv = document.getElementsByClassName("pause")[0];
+  document.getElementById("playscreen").removeChild(pauseDiv);
+}
 function play() {
   welcomescreen.classList.toggle("notdisplay");
   playscreen.classList.toggle("notdisplay");
@@ -35,7 +45,9 @@ function play() {
     refreshTimer: refreshTimer,
     showlives: showlives,
     win: win,
-    loose: loose
+    loose: loose,
+    pause: pause,
+    reestart: reestart
   });
 
   game.startGame();

@@ -37,7 +37,7 @@ class Stage {
   _createShip() {
     this.ship = new Ship(
       this.canvas.width / 2 - 50,
-      this.canvas.height - 10,
+      this.canvas.height - 40,
       100,
       10,
       7
@@ -132,6 +132,8 @@ class Stage {
       this.refreshTimer(minutes + ":" + seconds);
     }
   }
+
+  get field() {}
 
   reestartChrono() {
     this.pauseChrono();

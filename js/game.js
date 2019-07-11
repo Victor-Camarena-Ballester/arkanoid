@@ -11,6 +11,8 @@ class Game {
     this.refreshTimer = options.refreshTimer;
     this.win = options.win;
     this.loose = options.loose;
+    this.pause = options.pause;
+    this.reestart = options.reestart;
   }
 
   _setCurrentStage() {
@@ -48,6 +50,7 @@ class Game {
   pauseGame() {
     this.stage.pauseChrono();
     this.intervalGame = undefined;
+    this.pause();
   }
 
   gameOver() {
@@ -60,6 +63,7 @@ class Game {
       this._refreshScreen.bind(this)
     );
     this.stage.reestartChrono();
+    this.reestart();
   }
 
   _cleanScreen() {
@@ -80,6 +84,7 @@ class Game {
       this.canvas.height
     );
   }
+
   _printShip() {
     this.ctx.beginPath();
 

@@ -1,6 +1,12 @@
 const imgSprites = new Image();
 imgSprites.src = "images/sprite.png";
 
+const imgField = new Image();
+imgField.src = "images/fields.png";
+
+const imgShip = new Image();
+imgShip.src = "images/ship.png";
+
 const presentsArr = [
   { type: "n", speed: 0, color: "", imageUrl: imgSprites },
   {
@@ -66,9 +72,3 @@ const stagesArr = [
     options: { rows: 7, columnWidth: 70, speedBall: 5, countDown: 3 * 60 }
   }
 ];
-
-const imgField = new Image();
-imgField.src = "images/fields.png";
-
-const imgShip = new Image();
-imgShip.src = "images/ship.png";
