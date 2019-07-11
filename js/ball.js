@@ -19,4 +19,15 @@ class Ball {
       this.speed -= 1;
     }
   }
+  get color() {
+    if (this.speed > -1 && this.speed < 4) {
+      return "#FFF301";
+    } else if (this.speed > 3 && this.speed < 5) {
+      return "#FFBD00";
+    } else if (this.speed > 4 && this.speed < 8) {
+      return "#F37F0B";
+    } else {
+      return "#FF0000";
+    }
+  }
 }

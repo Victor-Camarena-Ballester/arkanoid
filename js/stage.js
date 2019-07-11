@@ -55,15 +55,17 @@ class Stage {
 
   _createBlocks() {
     let rows = this.rows;
-    let columns = parseInt((this.canvas.width - 10) / this.columnWidth);
+    let columns = parseInt((this.canvas.width - 50) / this.columnWidth);
     let spaceBetween = 10;
 
     let divScore = document.getElementById("score");
 
+    let firstY = 30;
     for (let i = 0; i < rows; i++) {
+      let firstX = 45;
       for (let c = 0; c < columns; c++) {
-        let blockPositionX = c * this.columnWidth + spaceBetween;
-        let blockPositionY = i * 30 + spaceBetween;
+        let blockPositionX = c * this.columnWidth + spaceBetween + firstX;
+        let blockPositionY = i * 30 + spaceBetween + firstY;
         let blockWidth = this.columnWidth - spaceBetween;
         let blockHeight = 30 - spaceBetween;
 
@@ -87,6 +89,7 @@ class Stage {
         );
         this.blocks.push(block);
       }
+      firstY = 0;
     }
   }
 

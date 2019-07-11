@@ -103,22 +103,35 @@ class Game {
     this.stage.blocks.forEach(block => {
       if (block.strength > 0) {
         this.ctx.beginPath();
-        this.ctx.rect(
+        this.ctx.drawImage(
+          block.image.imageUrl,
+          block.image.imgPosition.dx,
+          block.image.imgPosition.dy,
+          block.image.imgPosition.dw,
+          block.image.imgPosition.dh,
           block.positionX,
           block.positionY,
           block.width,
           block.height
         );
-        if (block.strength === 3) {
-          this.ctx.fillStyle = "#000040";
-        } else if (block.strength === 2) {
-          this.ctx.fillStyle = "#636363";
-        } else {
-          this.ctx.fillStyle = "#28AF80";
-        }
-
-        this.ctx.fill();
         this.ctx.closePath();
+        // this.ctx.beginPath();
+        // this.ctx.rect(
+        //   block.positionX,
+        //   block.positionY,
+        //   block.width,
+        //   block.height
+        // );
+        // if (block.strength === 3) {
+        //   this.ctx.fillStyle = "#000040";
+        // } else if (block.strength === 2) {
+        //   this.ctx.fillStyle = "#636363";
+        // } else {
+        //   this.ctx.fillStyle = "#28AF80";
+        // }
+
+        // this.ctx.fill();
+        // this.ctx.closePath();
       }
     });
   }
@@ -129,14 +142,14 @@ class Game {
         this.ctx.beginPath();
         this.ctx.drawImage(
           present.imageUrl,
-          0,
-          0,
-          16,
-          7,
+          present.imgPosition.dx,
+          present.imgPosition.dy,
+          present.imgPosition.dw,
+          present.imgPosition.dh,
           present.positionX,
           present.positionY,
-          present.width,
-          present.height
+          present.imgPosition.dw,
+          present.imgPosition.dh
         );
         this.ctx.closePath();
         present.moveDown();
@@ -153,7 +166,8 @@ class Game {
       0,
       Math.PI * 2
     );
-    this.ctx.fillStyle = "#0095DD";
+
+    this.ctx.fillStyle = this.stage.ball.color;
     this.ctx.fill();
     this.ctx.closePath();
 
@@ -197,11 +211,11 @@ class Game {
       this.stage.ball.positionX -
         this.stage.ball.speed -
         this.stage.ball.radius <
-        0 ||
+        20 ||
       this.stage.ball.positionX +
         this.stage.ball.speed +
         this.stage.ball.radius >
-        this.canvas.width
+        this.canvas.width - 20
     ) {
       this.stage.ball.directionX = -this.stage.ball.directionX;
     }
@@ -209,7 +223,7 @@ class Game {
       this.stage.ball.positionY -
         this.stage.ball.speed -
         this.stage.ball.radius <
-      0
+      10
     ) {
       this.stage.ball.directionY = -this.stage.ball.directionY;
     }
@@ -254,13 +268,10 @@ class Game {
     });
     if (indexToDelete != undefined) {
       this.presentsInGame.splice(indexToDelete, 1);
-      console.log(this.presentsInGame);
     }
   }
 
   _checkCollisionPresents() {
-    let indexToDelete = undefined;
-
     this.presentsInGame.forEach((present, index) => {
       if (this._rectRectCollission(present, this.stage.ship) && !present.used) {
         this.stage.givePresentToGame(present);
@@ -313,7 +324,7 @@ class Game {
           crashed = true;
           block.restStrength();
           block.sumScore();
-          if (block.present.type != "n") {
+          if (block.present.type != "n" && block.strength < 1) {
             this.presentsInGame.push(block.present);
           }
         }
@@ -330,7 +341,7 @@ class Game {
     if (this.intervalGame != undefined) {
       if (
         e.clientX + this.stage.ship.width < this.canvas.width &&
-        e.clientX > 0
+        e.clientX > 10
       ) {
         this.stage.ship.positionX = e.clientX;
       }

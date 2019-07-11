@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const welcomescreen = document.getElementById("welcomescreen");
 const playscreen = document.getElementById("playscreen");
 const gameoverscreen = document.getElementById("gameoverscreen");
+let game = undefined;
 
 function init() {
   const playButton = document.getElementById("button");
@@ -28,7 +29,7 @@ function play() {
   welcomescreen.classList.toggle("notdisplay");
   playscreen.classList.toggle("notdisplay");
 
-  const game = new Game({
+  game = new Game({
     ctx: ctx,
     canvas: canvas,
     refreshTimer: refreshTimer,
