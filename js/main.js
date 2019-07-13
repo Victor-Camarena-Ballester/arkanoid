@@ -8,6 +8,7 @@ let game = undefined;
 function init() {
   const playButton = document.getElementById("button");
   playButton.addEventListener("click", play);
+  playButton.innerText = "CLICK TO PLAY";
 }
 
 function refreshTimer(time) {
