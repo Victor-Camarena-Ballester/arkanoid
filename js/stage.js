@@ -21,6 +21,7 @@ class Stage {
     this.refreshTimer = refreshTimer;
     this.gameOver = gameOver;
     this.stageNumber = stageNumber;
+    this.intervalBlocksDown = undefined;
   }
 
   createStage() {
@@ -30,6 +31,7 @@ class Stage {
     this.stageInterval = undefined;
     this.stageInterval = setInterval(this._startChronometer.bind(this), 1000);
     this._startChronometer();
+    this._startMoveBlocks();
   }
 
   createBall() {
@@ -136,10 +138,29 @@ class Stage {
   reestartChrono() {
     this.pauseChrono();
     this.stageInterval = setInterval(this._startChronometer.bind(this), 1000);
+    this._startMoveBlocks();
   }
 
   pauseChrono() {
     clearInterval(this.stageInterval);
     this.stageInterval = undefined;
+    clearInterval(this.intervalBlocksDown);
+    this.intervalBlocksDown = undefined;
+  }
+
+  moveBlocksDown() {
+    this.blocks.forEach(block => {
+      block.positionY += 10;
+      block.present.positionY += 10;
+    });
+  }
+
+  _startMoveBlocks() {
+    if (this.stageNumber > 1) {
+      this.intervalBlocksDown = setInterval(
+        this.moveBlocksDown.bind(this),
+        8000
+      );
+    }
   }
 }
