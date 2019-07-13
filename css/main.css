@@ -79,3 +79,15 @@ body {
   color: #ffff;
   padding-top: 70px;
 }
+.messageshot {
+  position: relative;
+  top: 100p;
+  /* background-color: black; */
+  /* color: white; */
+  width: 590px;
+  margin: 0 auto;
+  top: -360px;
+  opacity: 0.7;
+  font-size: 35px;
+  color: cornsilk;
+}

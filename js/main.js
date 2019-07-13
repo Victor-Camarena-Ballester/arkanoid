@@ -25,6 +25,19 @@ function win() {
 function showlives(livesNumber) {
   document.getElementById("lives").innerHTML = livesNumber;
 }
+
+function messageShot() {
+  let playScreenDiv = document.getElementById("playscreen");
+  let messageDiv = document.createElement("div");
+  messageDiv.innerText = "Press Enter to shot the ball";
+  messageDiv.setAttribute("class", "messageshot");
+  playScreenDiv.appendChild(messageDiv);
+  setTimeout(clearMessageShot, 2000);
+}
+function clearMessageShot() {
+  let divmessage = document.getElementsByClassName("messageshot")[0];
+  document.getElementById("playscreen").removeChild(divmessage);
+}
 function pause() {
   let playScreenDiv = document.getElementById("playscreen");
   let pauseDiv = document.createElement("div");
@@ -52,6 +65,7 @@ function play() {
   });
 
   game.startGame();
+  messageShot();
 }
 
 window.onload = init;
