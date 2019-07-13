@@ -6,7 +6,8 @@ class Stage {
     speedBall,
     countDown,
     refreshTimer,
-    gameOver
+    gameOver,
+    stageNumber
   ) {
     this.canvas = canvas;
     this.rows = rows;
@@ -19,6 +20,7 @@ class Stage {
     this.columnWidth = columnWidth;
     this.refreshTimer = refreshTimer;
     this.gameOver = gameOver;
+    this.stageNumber = stageNumber;
   }
 
   createStage() {
@@ -47,8 +49,8 @@ class Stage {
   _createBall() {
     this.ball = new Ball(
       this.ship.positionX + this.ship.width / 2,
-      this.ship.positionY - 11,
-      10,
+      this.ship.positionY - 8,
+      7,
       0
     );
   }
@@ -89,7 +91,6 @@ class Stage {
         );
         this.blocks.push(block);
       }
-      firstY = 0;
     }
   }
 
@@ -126,14 +127,11 @@ class Stage {
     seconds = seconds < 10 ? "0" + seconds : seconds;
 
     if (--this.countDown < 0) {
-      this.pauseChrono();
       this.gameOver();
     } else {
       this.refreshTimer(minutes + ":" + seconds);
     }
   }
-
-  get field() {}
 
   reestartChrono() {
     this.pauseChrono();

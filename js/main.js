@@ -16,6 +16,7 @@ function refreshTimer(time) {
 function loose() {
   playscreen.classList.toggle("notdisplay");
   gameoverscreen.classList.toggle("notdisplay");
+  alert("loose");
 }
 function win() {
   playscreen.classList.toggle("notdisplay");

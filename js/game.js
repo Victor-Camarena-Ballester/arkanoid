@@ -21,8 +21,7 @@ class Game {
     });
 
     if (!actualStage) {
-      this.stopGame();
-      this.win();
+      this._winGame();
       return;
     }
 
@@ -33,11 +32,16 @@ class Game {
       actualStage.options.speedBall,
       actualStage.options.countDown,
       this.refreshTimer,
-      this.gameOver
+      this.gameOver,
+      this.stageNumber
     );
     this.stage.createStage();
   }
-
+  _winGame() {
+    this.stage.pauseChrono();
+    this.intervalGame = undefined;
+    this.win();
+  }
   startGame() {
     this._addListeners();
     this._setCurrentStage();
@@ -56,6 +60,7 @@ class Game {
   gameOver() {
     this.stage.pauseChrono();
     this.intervalGame = undefined;
+    this.loose();
   }
 
   reestartGame() {
@@ -74,7 +79,7 @@ class Game {
   _printField() {
     this.ctx.drawImage(
       imgField,
-      0,
+      (this.stageNumber - 1) * 192,
       0,
       191,
       230,
@@ -85,7 +90,33 @@ class Game {
     );
   }
 
+  _moveShip() {
+    if (this.stage.ship.positionX <= 20 && this.stage.ship.moveRight === true) {
+      this.stage.ship.move();
+    }
+    if (
+      this.stage.ship.positionX >=
+        this.canvas.width - this.stage.ship.width - 20 &&
+      this.stage.ship.moveLeft === true
+    ) {
+      this.stage.ship.move();
+    }
+
+    if (
+      this.stage.ship.positionX > 20 &&
+      this.stage.ship.positionX < this.canvas.width - this.stage.ship.width - 20
+    ) {
+      this.stage.ship.move();
+    }
+
+    if (!this.stage.ball.moving) {
+      this.stage.ball.positionX =
+        this.stage.ship.positionX + this.stage.ship.width / 2;
+    }
+  }
+
   _printShip() {
+    this._moveShip();
     this.ctx.beginPath();
 
     this.ctx.drawImage(
@@ -235,8 +266,8 @@ class Game {
     if (this.stage.ball.positionY > this.canvas.height) {
       this.lives -= 1;
       if (this.lives === 0) {
+        this.showlives(this.lives);
         this.gameOver();
-        this.loose();
       } else {
         this.showlives(this.lives);
         this.stage.createBall();
@@ -277,12 +308,17 @@ class Game {
   }
 
   _checkCollisionPresents() {
+    let indexToDelete = undefined;
     this.presentsInGame.forEach((present, index) => {
       if (this._rectRectCollission(present, this.stage.ship) && !present.used) {
         this.stage.givePresentToGame(present);
         present.used = true;
+        indexToDelete = index;
       }
     });
+    if (indexToDelete != undefined) {
+      this.presentsInGame.splice(indexToDelete, 1);
+    }
   }
 
   _checkAllBlocksCrashed() {
@@ -342,21 +378,6 @@ class Game {
     this.stage.shotBall();
   }
 
-  _moveShip(e) {
-    if (this.intervalGame != undefined) {
-      if (
-        e.clientX + this.stage.ship.width < this.canvas.width &&
-        e.clientX > 10
-      ) {
-        this.stage.ship.positionX = e.clientX;
-      }
-      if (!this.stage.ball.moving) {
-        this.stage.ball.positionX =
-          this.stage.ship.positionX + this.stage.ship.width / 2;
-      }
-    }
-  }
-
   _rectCircleCollission(circle, rect) {
     let distX = Math.abs(circle.positionX - rect.positionX - rect.width / 2);
     let distY = Math.abs(circle.positionY - rect.positionY - rect.height / 2);
@@ -401,14 +422,27 @@ class Game {
         this.pauseGame();
       }
     }
+    if (e.keyCode === 39) {
+      this.stage.ship.moveRight = true;
+    }
+    if (e.keyCode === 37) {
+      this.stage.ship.moveLeft = true;
+    }
+    if (e.keyCode === 13) {
+      this._shotBall();
+    }
+  }
+  _checkKeyUp(e) {
+    if (e.keyCode === 39) {
+      this.stage.ship.moveRight = false;
+    }
+    if (e.keyCode === 37) {
+      this.stage.ship.moveLeft = false;
+    }
   }
 
   _addListeners() {
-    this.canvas.addEventListener("click", this._shotBall.bind(this));
-    document.body.addEventListener("mousemove", this._moveShip.bind(this));
-    document.body.addEventListener(
-      "keypress",
-      this._checkKeyPressed.bind(this)
-    );
+    document.body.addEventListener("keydown", this._checkKeyPressed.bind(this));
+    document.body.addEventListener("keyup", this._checkKeyUp.bind(this));
   }
 }

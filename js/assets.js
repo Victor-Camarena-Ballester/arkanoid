@@ -65,10 +65,10 @@ const stagesArr = [
   },
   {
     stageNum: 2,
-    options: { rows: 6, columnWidth: 70, speedBall: 4, countDown: 4 * 60 }
+    options: { rows: 6, columnWidth: 70, speedBall: 4, countDown: 6 * 60 }
   },
   {
     stageNum: 3,
-    options: { rows: 7, columnWidth: 70, speedBall: 5, countDown: 3 * 60 }
+    options: { rows: 7, columnWidth: 70, speedBall: 5, countDown: 7 * 60 }
   }
 ];

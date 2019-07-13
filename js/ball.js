@@ -15,7 +15,7 @@ class Ball {
     }
   }
   goSlower() {
-    if (this.speed > 0) {
+    if (this.speed > 3) {
       this.speed -= 1;
     }
   }

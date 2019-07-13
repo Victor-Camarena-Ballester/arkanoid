@@ -40,7 +40,7 @@ body {
   height: 100%;
 }
 #myGame {
-  margin-top: 115px;
+  margin-top: 50px;
 }
 #button {
   font-family: MyGame;
@@ -52,14 +52,12 @@ body {
   background-color: black;
   color: white;
   width: 590px;
-  display: inline-block;
+  margin: 0 auto;
   top: -360px;
 }
 .header {
   display: inline-block;
   vertical-align: top;
-  /* margin-top: 250px; */
-  /* margin-left: 30px; */
   color: red;
   font-size: 30px;
   font-family: MyGame;
@@ -79,4 +77,5 @@ body {
   font-size: 30px;
   font-family: MyGame;
   color: #ffff;
+  padding-top: 70px;
 }

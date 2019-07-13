@@ -7,6 +7,8 @@ class Ship {
     this.speed = speed;
     this.lives = 3;
     this.canShot = false;
+    this.moveLeft = false;
+    this.moveRight = false;
   }
 
   grow() {
@@ -20,5 +22,13 @@ class Ship {
   }
   shotOff() {
     this.canShot = false;
+  }
+  move() {
+    if (this.moveLeft) {
+      this.positionX -= this.speed;
+    }
+    if (this.moveRight) {
+      this.positionX += this.speed;
+    }
   }
 }
