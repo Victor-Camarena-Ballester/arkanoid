@@ -7,7 +7,7 @@ let game = undefined;
 
 function init() {
   const playButton = document.getElementById("button");
-  playButton.addEventListener("click", play);
+  playButton.addEventListener("click", playB);
   playButton.innerText = "CLICK TO PLAY";
 }
 
@@ -50,7 +50,7 @@ function reestart() {
   let pauseDiv = document.getElementsByClassName("pause")[0];
   document.getElementById("playscreen").removeChild(pauseDiv);
 }
-function play() {
+function playB() {
   welcomescreen.classList.toggle("notdisplay");
   playscreen.classList.toggle("notdisplay");
 

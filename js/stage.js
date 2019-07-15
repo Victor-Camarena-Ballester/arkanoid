@@ -32,6 +32,7 @@ class Stage {
     this.stageInterval = setInterval(this._startChronometer.bind(this), 1000);
     this._startChronometer();
     this._startMoveBlocks();
+    this._stageMusic();
   }
 
   createBall() {
@@ -162,5 +163,9 @@ class Stage {
         8000
       );
     }
+  }
+  _stageMusic() {
+    let audioN = new Audio("music/2 - Track 2.mp3");
+    audioN.play();
   }
 }

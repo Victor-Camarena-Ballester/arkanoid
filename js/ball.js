@@ -12,11 +12,15 @@ class Ball {
   goFaster() {
     if (this.speed < 8) {
       this.speed += 1;
+      let audioN = new Audio("music/SFX 4.mp3");
+      audioN.play();
     }
   }
   goSlower() {
     if (this.speed > 3) {
       this.speed -= 1;
+      let audioN = new Audio("music/SFX 3.mp3");
+      audioN.play();
     }
   }
   get color() {

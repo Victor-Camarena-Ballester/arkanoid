@@ -13,9 +13,13 @@ class Ship {
 
   grow() {
     this.width += 20;
+    let audioN = new Audio("music/SFX 9.mp3");
+    audioN.play();
   }
   decrease() {
     this.width -= 20;
+    let audioN = new Audio("music/SFX 10.mp3");
+    audioN.play();
   }
   shotOn() {
     this.canShot = true;

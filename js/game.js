@@ -253,6 +253,7 @@ class Game {
         this.stage.ball.radius >
         this.canvas.width - 20
     ) {
+      this._bounceSound();
       this.stage.ball.directionX = -this.stage.ball.directionX;
     }
     if (
@@ -261,6 +262,7 @@ class Game {
         this.stage.ball.radius <
       10
     ) {
+      this._bounceSound();
       this.stage.ball.directionY = -this.stage.ball.directionY;
     }
     if (this.stage.ball.positionY > this.canvas.height) {
@@ -268,7 +270,9 @@ class Game {
       if (this.lives === 0) {
         this.showlives(this.lives);
         this.gameOver();
+        this._gameOverSound();
       } else {
+        this._liveLostSound();
         this.showlives(this.lives);
         this.stage.createBall();
       }
@@ -280,6 +284,7 @@ class Game {
       this._rectCircleCollission(this.stage.ball, this.stage.ship) &&
       this.stage.ball.moving
     ) {
+      this._bounceSound();
       var ballPos = this.stage.ball.positionX - this.stage.ship.positionX;
       var relativePos = this.stage.ship.width - ballPos;
       var angle = relativePos * (Math.PI / this.stage.ship.width);
@@ -355,6 +360,7 @@ class Game {
     this.stage.blocks.forEach((block, index) => {
       if (block.strength > 0) {
         if (this._rectCircleCollission(this.stage.ball, block) && !crashed) {
+          this._bounceSound();
           if (this.stage.ball.positionX > block.positionX + block.width / 2) {
             this.stage.ball.directionY = -this.stage.ball.directionY;
           } else {
@@ -444,5 +450,18 @@ class Game {
   _addListeners() {
     document.body.addEventListener("keydown", this._checkKeyPressed.bind(this));
     document.body.addEventListener("keyup", this._checkKeyUp.bind(this));
+  }
+
+  _bounceSound() {
+    let audioN = new Audio("music/SFX 6.mp3");
+    audioN.play();
+  }
+  _liveLostSound() {
+    let audioN = new Audio("music/SFX 2.mp3");
+    audioN.play();
+  }
+  _gameOverSound() {
+    let audioN = new Audio("music/6 - Track 6.mp3");
+    audioN.play();
   }
 }
