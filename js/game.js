@@ -221,6 +221,7 @@ class Game {
   }
 
   _refreshScreen() {
+    this._checkStageTime();
     this._cleanScreen();
     this._checkAllCollissions();
     this._printField();
@@ -231,6 +232,12 @@ class Game {
 
     if (this.intervalGame !== undefined) {
       window.requestAnimationFrame(this._refreshScreen.bind(this));
+    }
+  }
+
+  _checkStageTime() {
+    if (this.stage.countDown < 0) {
+      this.gameOver();
     }
   }
 

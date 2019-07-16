@@ -129,11 +129,8 @@ class Stage {
     minutes = minutes < 10 ? "0" + minutes : minutes;
     seconds = seconds < 10 ? "0" + seconds : seconds;
 
-    if (--this.countDown < 0) {
-      this.gameOver();
-    } else {
-      this.refreshTimer(minutes + ":" + seconds);
-    }
+    --this.countDown;
+    this.refreshTimer(minutes + ":" + seconds);
   }
 
   reestartChrono() {
@@ -165,7 +162,13 @@ class Stage {
     }
   }
   _stageMusic() {
-    let audioN = new Audio("music/2 - Track 2.mp3");
-    audioN.play();
+    if (this.stageNumber === 3) {
+      let audioN = new Audio("music/3 - Track 3.mp3");
+      audioN.loop = true;
+      audioN.play();
+    } else {
+      let audioN = new Audio("music/2 - Track 2.mp3");
+      audioN.play();
+    }
   }
 }

@@ -87,7 +87,19 @@ body {
   width: 590px;
   margin: 0 auto;
   top: -360px;
-  opacity: 0.7;
-  font-size: 35px;
-  color: cornsilk;
+  font-size: 22px;
+  color: white;
+  font-family: MyGame;
+}
+#gameoverscreen {
+  position: relative;
+  background-color: black;
+  color: white;
+  margin: 0 auto;
+  top: -580px;
+  opacity: 0.8;
+  text-align: center;
+}
+.opacity5 {
+  opacity: 0.5;
 }

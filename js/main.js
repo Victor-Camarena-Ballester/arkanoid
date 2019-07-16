@@ -15,9 +15,8 @@ function refreshTimer(time) {
   document.getElementById("chronometer").innerHTML = time;
 }
 function loose() {
-  playscreen.classList.toggle("notdisplay");
   gameoverscreen.classList.toggle("notdisplay");
-  alert("loose");
+  canvas.classList.add("opacity5");
 }
 function win() {
   playscreen.classList.toggle("notdisplay");
