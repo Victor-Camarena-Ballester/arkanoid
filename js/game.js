@@ -13,6 +13,9 @@ class Game {
     this.loose = options.loose;
     this.pause = options.pause;
     this.reestart = options.reestart;
+    this.bulletsInGame = [];
+    this.intervalBullets = undefined;
+    this.countBullets = 0;
   }
 
   _setCurrentStage() {
@@ -33,15 +36,18 @@ class Game {
       actualStage.options.countDown,
       this.refreshTimer,
       this.gameOver,
-      this.stageNumber
+      this.stageNumber,
+      this.bulletsInGame
     );
     this.stage.createStage();
   }
+
   _winGame() {
     this.stage.pauseChrono();
     this.intervalGame = undefined;
     this.win();
   }
+
   startGame() {
     this._addListeners();
     this._setCurrentStage();
@@ -61,6 +67,9 @@ class Game {
     this.stage.pauseChrono();
     this.intervalGame = undefined;
     this.loose();
+
+    let audioN = new Audio("music/Track4.mp3");
+    audioN.play();
   }
 
   reestartGame() {
@@ -151,23 +160,6 @@ class Game {
           block.height
         );
         this.ctx.closePath();
-        // this.ctx.beginPath();
-        // this.ctx.rect(
-        //   block.positionX,
-        //   block.positionY,
-        //   block.width,
-        //   block.height
-        // );
-        // if (block.strength === 3) {
-        //   this.ctx.fillStyle = "#000040";
-        // } else if (block.strength === 2) {
-        //   this.ctx.fillStyle = "#636363";
-        // } else {
-        //   this.ctx.fillStyle = "#28AF80";
-        // }
-
-        // this.ctx.fill();
-        // this.ctx.closePath();
       }
     });
   }
@@ -190,6 +182,25 @@ class Game {
         this.ctx.closePath();
         present.moveDown();
       }
+    });
+  }
+
+  _printBullets() {
+    this.bulletsInGame.forEach(bullet => {
+      this.ctx.beginPath();
+      this.ctx.drawImage(
+        bullet.image.imageUrl,
+        bullet.image.imgPosition.dx,
+        bullet.image.imgPosition.dy,
+        bullet.image.imgPosition.dw,
+        bullet.image.imgPosition.dh,
+        bullet.positionX,
+        bullet.positionY,
+        bullet.image.imgPosition.dw,
+        bullet.image.imgPosition.dh
+      );
+      this.ctx.closePath();
+      bullet.move();
     });
   }
 
@@ -229,6 +240,7 @@ class Game {
     this._printShip();
     this._printBlocks();
     this._printPresents();
+    this._printBullets();
 
     if (this.intervalGame !== undefined) {
       window.requestAnimationFrame(this._refreshScreen.bind(this));
@@ -245,8 +257,10 @@ class Game {
     this._checkCollisionWalls();
     this._checkCollisionsBlocks();
     this._checkPresentsGone();
+    this._checkBulletsGone();
     this._checkCollisionPresents();
     this._checkCollisionShip();
+    this._checkCollisionsBullets();
   }
 
   _checkCollisionWalls() {
@@ -318,6 +332,22 @@ class Game {
       this.presentsInGame.splice(indexToDelete, 1);
     }
   }
+  _checkBulletsGone() {
+    if (this.bulletsInGame.length === 0) {
+      return;
+    }
+
+    let indexToDelete = undefined;
+
+    this.bulletsInGame.forEach((bullet, index) => {
+      if (bullet.positionY < 0) {
+        indexToDelete = index;
+      }
+    });
+    if (indexToDelete != undefined) {
+      this.bulletsInGame.splice(indexToDelete, 1);
+    }
+  }
 
   _checkCollisionPresents() {
     let indexToDelete = undefined;
@@ -341,7 +371,7 @@ class Game {
     if (count.length === 0) {
       this.stage.pauseChrono();
       this.stageNumber += 1;
-      this._setCurrentStage();
+      setTimeout(this._setCurrentStage(), 2000);
     }
   }
 
@@ -384,6 +414,33 @@ class Game {
         }
       }
     });
+
+    this._checkAllBlocksCrashed();
+  }
+
+  _checkCollisionsBullets() {
+    let indexBulletToDelete = undefined;
+    this.bulletsInGame.forEach((bullet, indexBullet) => {
+      let crashed = false;
+      this.stage.blocks
+        .filter(b => {
+          return b.strength > 0;
+        })
+        .forEach((block, indexBlock) => {
+          if (this._rectRectCollission(bullet, block) && !crashed) {
+            this._bulletCrashedSound();
+            crashed = true;
+            block.restStrength();
+            block.sumScore();
+            if (block.present.type != "n" && block.strength < 1) {
+              this.presentsInGame.push(block.present);
+            }
+          }
+        });
+    });
+    if (indexBulletToDelete != undefined) {
+      this.bulletsInGame.splice(indexBulletToDelete, 1);
+    }
     this._checkAllBlocksCrashed();
   }
 
@@ -459,6 +516,10 @@ class Game {
     document.body.addEventListener("keyup", this._checkKeyUp.bind(this));
   }
 
+  _bulletCrashedSound() {
+    let audioN = new Audio("music/SFX 10.mp3");
+    audioN.play();
+  }
   _bounceSound() {
     let audioN = new Audio("music/SFX 6.mp3");
     audioN.play();

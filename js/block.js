@@ -50,7 +50,7 @@ class Block {
       case 2:
         return {
           imageUrl: imgSprites,
-          imgPosition: { dx: 115, dy: 38, dw: 42, dh: 21 }
+          imgPosition: { dx: 174, dy: 36, dw: 42, dh: 21 }
         };
       case 3:
         return {

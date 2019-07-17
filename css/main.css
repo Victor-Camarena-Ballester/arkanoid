@@ -81,9 +81,6 @@ body {
 }
 .messageshot {
   position: relative;
-  top: 100p;
-  /* background-color: black; */
-  /* color: white; */
   width: 590px;
   margin: 0 auto;
   top: -360px;

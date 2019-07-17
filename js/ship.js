@@ -6,7 +6,6 @@ class Ship {
     this.height = height;
     this.speed = speed;
     this.lives = 3;
-    this.canShot = false;
     this.moveLeft = false;
     this.moveRight = false;
   }
@@ -21,12 +20,6 @@ class Ship {
     let audioN = new Audio("music/SFX 10.mp3");
     audioN.play();
   }
-  shotOn() {
-    this.canShot = true;
-  }
-  shotOff() {
-    this.canShot = false;
-  }
   move() {
     if (this.moveLeft) {
       this.positionX -= this.speed;
@@ -34,5 +27,15 @@ class Ship {
     if (this.moveRight) {
       this.positionX += this.speed;
     }
+  }
+  getBullets() {
+    let bullet1 = new Bullet(this.positionX - 5, this.positionY - 15, 5, 10);
+    let bullet2 = new Bullet(
+      this.positionX + this.width - 10,
+      this.positionY - 15,
+      5,
+      10
+    );
+    return [bullet1, bullet2];
   }
 }

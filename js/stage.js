@@ -7,7 +7,8 @@ class Stage {
     countDown,
     refreshTimer,
     gameOver,
-    stageNumber
+    stageNumber,
+    bulletsInGame
   ) {
     this.canvas = canvas;
     this.rows = rows;
@@ -22,6 +23,10 @@ class Stage {
     this.gameOver = gameOver;
     this.stageNumber = stageNumber;
     this.intervalBlocksDown = undefined;
+    this.bulletsInGame = bulletsInGame;
+    this.intervalBullets = undefined;
+    this.countTimerBullets = 0;
+    this.isShoothing = false;
   }
 
   createStage() {
@@ -33,6 +38,8 @@ class Stage {
     this._startChronometer();
     this._startMoveBlocks();
     this._stageMusic();
+    this.intervalBullets = undefined;
+    this.countTimerBullets = 0;
   }
 
   createBall() {
@@ -110,6 +117,30 @@ class Stage {
     if (presentColissioned.type === "s-") {
       this.ball.goSlower();
     }
+    if (presentColissioned.type === "IronHack") {
+      this.startShootingBullets();
+    }
+  }
+
+  startShootingBullets() {
+    this.isShoothing = true;
+    this.intervalBullets = setInterval(this.shotBullets.bind(this), 1000);
+  }
+
+  shotBullets() {
+    ++this.countTimerBullets;
+
+    Array.prototype.push.apply(this.bulletsInGame, this.ship.getBullets());
+
+    let audioN = new Audio("music/SFX 11.mp3");
+    audioN.loop = false;
+    audioN.play();
+
+    if (this.countTimerBullets > 30) {
+      this.isShoothing = false;
+      clearInterval(this.intervalBullets);
+      this.intervalBullets = undefined;
+    }
   }
 
   shotBall() {
@@ -137,6 +168,9 @@ class Stage {
     this.pauseChrono();
     this.stageInterval = setInterval(this._startChronometer.bind(this), 1000);
     this._startMoveBlocks();
+    if (this.isShoothing) {
+      this.startShootingBullets();
+    }
   }
 
   pauseChrono() {
@@ -144,6 +178,8 @@ class Stage {
     this.stageInterval = undefined;
     clearInterval(this.intervalBlocksDown);
     this.intervalBlocksDown = undefined;
+    clearInterval(this.intervalBullets);
+    this.intervalBullets = undefined;
   }
 
   moveBlocksDown() {
@@ -164,7 +200,6 @@ class Stage {
   _stageMusic() {
     if (this.stageNumber === 3) {
       let audioN = new Audio("music/3 - Track 3.mp3");
-      audioN.loop = true;
       audioN.play();
     } else {
       let audioN = new Audio("music/2 - Track 2.mp3");
