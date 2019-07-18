@@ -76,14 +76,14 @@ const presentsArr = [
 const stagesArr = [
   {
     stageNum: 1,
-    options: { rows: 1, columnWidth: 70, speedBall: 5, countDown: 5 * 60 }
+    options: { rows: 4, columnWidth: 70, speedBall: 5, countDown: 5 * 60 }
   },
   {
     stageNum: 2,
-    options: { rows: 1, columnWidth: 70, speedBall: 5, countDown: 6 * 60 }
+    options: { rows: 5, columnWidth: 70, speedBall: 5, countDown: 6 * 60 }
   },
   {
     stageNum: 3,
-    options: { rows: 1, columnWidth: 70, speedBall: 5, countDown: 7 * 60 }
+    options: { rows: 6, columnWidth: 70, speedBall: 5, countDown: 7 * 60 }
   }
 ];

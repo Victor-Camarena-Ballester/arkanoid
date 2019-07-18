@@ -8,7 +8,7 @@ let game = undefined;
 function init() {
   const playButton = document.getElementById("button");
   playButton.addEventListener("click", playB);
-  playButton.innerText = "CLICK TO PLAY";
+  playButton.innerText = "CLICK HERE TO PLAY";
 }
 
 function refreshTimer(time) {
@@ -19,8 +19,8 @@ function loose() {
   canvas.classList.add("opacity5");
 }
 function win() {
-  playscreen.classList.toggle("notdisplay");
   winscreen.classList.toggle("notdisplay");
+  canvas.classList.add("opacity5");
 }
 function showlives(livesNumber) {
   document.getElementById("lives").innerHTML = livesNumber;
@@ -34,6 +34,16 @@ function messageShot() {
   playScreenDiv.appendChild(messageDiv);
   setTimeout(clearMessageShot, 2000);
 }
+
+function messageStage(stageNumber) {
+  let playScreenDiv = document.getElementById("playscreen");
+  let messageDiv = document.createElement("div");
+  messageDiv.innerText = "STAGE " + stageNumber;
+  messageDiv.setAttribute("class", "messageshot");
+  playScreenDiv.appendChild(messageDiv);
+  setTimeout(clearMessageShot, 2000);
+}
+
 function clearMessageShot() {
   let divmessage = document.getElementsByClassName("messageshot")[0];
   document.getElementById("playscreen").removeChild(divmessage);
@@ -61,7 +71,8 @@ function playB() {
     win: win,
     loose: loose,
     pause: pause,
-    reestart: reestart
+    reestart: reestart,
+    messageStage: messageStage
   });
 
   game.startGame();
@@ -69,3 +80,7 @@ function playB() {
 }
 
 window.onload = init;
+
+gameoverscreen.addEventListener("click", function() {
+  window.location.reload();
+});

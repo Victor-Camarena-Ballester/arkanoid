@@ -76,30 +76,32 @@ class Stage {
     for (let i = 0; i < rows; i++) {
       let firstX = 45;
       for (let c = 0; c < columns; c++) {
-        let blockPositionX = c * this.columnWidth + spaceBetween + firstX;
-        let blockPositionY = i * 30 + spaceBetween + firstY;
-        let blockWidth = this.columnWidth - spaceBetween;
-        let blockHeight = 30 - spaceBetween;
+        if (c != 3) {
+          let blockPositionX = c * this.columnWidth + spaceBetween + firstX;
+          let blockPositionY = i * 30 + spaceBetween + firstY;
+          let blockWidth = this.columnWidth - spaceBetween;
+          let blockHeight = 30 - spaceBetween;
 
-        let newPresent = new Present(
-          presentsArr[Math.floor(Math.random() * presentsArr.length)]
-        );
+          let newPresent = new Present(
+            presentsArr[Math.floor(Math.random() * presentsArr.length)]
+          );
 
-        newPresent.positionX = blockPositionX;
-        newPresent.positionY = blockPositionY;
-        newPresent.width = blockWidth;
-        newPresent.height = blockHeight;
+          newPresent.positionX = blockPositionX;
+          newPresent.positionY = blockPositionY;
+          newPresent.width = blockWidth;
+          newPresent.height = blockHeight;
 
-        let block = new Block(
-          blockPositionX,
-          blockPositionY,
-          blockWidth,
-          blockHeight,
-          Math.floor(Math.random() * (3 - 1 + 1)) + 1,
-          divScore,
-          newPresent
-        );
-        this.blocks.push(block);
+          let block = new Block(
+            blockPositionX,
+            blockPositionY,
+            blockWidth,
+            blockHeight,
+            Math.floor(Math.random() * (3 - 1 + 1)) + 1,
+            divScore,
+            newPresent
+          );
+          this.blocks.push(block);
+        }
       }
     }
   }

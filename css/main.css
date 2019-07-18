@@ -26,7 +26,7 @@ body {
 }
 #welcomescreen {
   text-align: center;
-  padding-top: 300px;
+  padding-top: 100px;
 }
 #welcomescreen img {
   width: 600px;
@@ -45,15 +45,19 @@ body {
 #button {
   font-family: MyGame;
   font-size: 30px;
+  cursor: pointer;
 }
 .pause {
   position: relative;
   top: 100p;
   background-color: black;
   color: white;
-  width: 590px;
+  width: 40%;
   margin: 0 auto;
   top: -360px;
+  border: 2px dotted;
+  padding: 30px;
+  font-size: 25px;
 }
 .header {
   display: inline-block;
@@ -93,10 +97,27 @@ body {
   background-color: black;
   color: white;
   margin: 0 auto;
+  top: -636px;
+  opacity: 0.8;
+  text-align: center;
+  cursor: pointer;
+}
+#winscreen {
+  position: relative;
+  background-color: black;
+  color: white;
+  margin: 0 auto;
   top: -580px;
   opacity: 0.8;
   text-align: center;
+  padding: 50px;
 }
 .opacity5 {
   opacity: 0.5;
+}
+.playagain {
+  color: #8bc34a;
+  font-size: 29px;
+  font-family: MyGame;
+  padding-top: 30px;
 }

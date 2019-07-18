@@ -4,6 +4,7 @@ class Bullet {
     this.positionY = positionY;
     this.width = width;
     this.height = height;
+    this.crashed = false;
   }
   move() {
     this.positionY -= 10;

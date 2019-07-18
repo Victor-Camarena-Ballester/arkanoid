@@ -16,9 +16,13 @@ class Game {
     this.bulletsInGame = [];
     this.intervalBullets = undefined;
     this.countBullets = 0;
+    this.messageStage = options.messageStage;
   }
 
   _setCurrentStage() {
+    document.getElementById("mainMusic").play();
+    document.getElementById("mainMusic").volume = 0;
+
     let actualStage = stagesArr.find(stage => {
       return stage.stageNum === this.stageNumber;
     });
@@ -40,6 +44,14 @@ class Game {
       this.bulletsInGame
     );
     this.stage.createStage();
+
+    if (actualStage.stageNum > 1) {
+      this.messageStage(actualStage.stageNum);
+    }
+    setTimeout(this._volumeUP, 2500);
+  }
+  _volumeUP() {
+    document.getElementById("mainMusic").volume = 0.8;
   }
 
   _winGame() {
@@ -58,14 +70,16 @@ class Game {
   }
 
   pauseGame() {
+    document.getElementById("mainMusic").pause();
     this.stage.pauseChrono();
     this.intervalGame = undefined;
     this.pause();
   }
 
   gameOver() {
-    this.stage.pauseChrono();
-    this.intervalGame = undefined;
+    document.getElementById("mainMusic").stop();
+
+    this.pauseGame();
     this.loose();
 
     let audioN = new Audio("music/Track4.mp3");
@@ -73,6 +87,7 @@ class Game {
   }
 
   reestartGame() {
+    document.getElementById("mainMusic").play();
     this.intervalGame = window.requestAnimationFrame(
       this._refreshScreen.bind(this)
     );
@@ -329,6 +344,7 @@ class Game {
       }
     });
     if (indexToDelete != undefined) {
+      this.presentsInGame[indexToDelete].intervalRolling = undefined;
       this.presentsInGame.splice(indexToDelete, 1);
     }
   }
@@ -353,12 +369,18 @@ class Game {
     let indexToDelete = undefined;
     this.presentsInGame.forEach((present, index) => {
       if (this._rectRectCollission(present, this.stage.ship) && !present.used) {
-        this.stage.givePresentToGame(present);
-        present.used = true;
-        indexToDelete = index;
+        if (
+          (present.type === "IronHack" && !this.stage.isShoothing) ||
+          present.type !== "IronHack"
+        ) {
+          this.stage.givePresentToGame(present);
+          present.used = true;
+          indexToDelete = index;
+        }
       }
     });
     if (indexToDelete != undefined) {
+      this.presentsInGame[indexToDelete].intervalRolling = undefined;
       this.presentsInGame.splice(indexToDelete, 1);
     }
   }
@@ -371,7 +393,8 @@ class Game {
     if (count.length === 0) {
       this.stage.pauseChrono();
       this.stageNumber += 1;
-      setTimeout(this._setCurrentStage(), 2000);
+      this.presentsInGame = [];
+      this._setCurrentStage();
     }
   }
 
@@ -420,24 +443,28 @@ class Game {
 
   _checkCollisionsBullets() {
     let indexBulletToDelete = undefined;
-    this.bulletsInGame.forEach((bullet, indexBullet) => {
-      let crashed = false;
-      this.stage.blocks
-        .filter(b => {
-          return b.strength > 0;
-        })
-        .forEach((block, indexBlock) => {
-          if (this._rectRectCollission(bullet, block) && !crashed) {
-            this._bulletCrashedSound();
-            crashed = true;
-            block.restStrength();
-            block.sumScore();
-            if (block.present.type != "n" && block.strength < 1) {
-              this.presentsInGame.push(block.present);
+    this.bulletsInGame
+      .filter(f => {
+        return !f.crashed;
+      })
+      .forEach((bullet, indexBullet) => {
+        this.stage.blocks
+          .filter(b => {
+            return b.strength > 0;
+          })
+          .forEach((block, indexBlock) => {
+            if (this._rectRectCollission(bullet, block)) {
+              this._bulletCrashedSound();
+              indexBulletToDelete = indexBullet;
+              bullet.crashed = true;
+              block.restStrength();
+              block.sumScore();
+              if (block.present.type != "n" && block.strength < 1) {
+                this.presentsInGame.push(block.present);
+              }
             }
-          }
-        });
-    });
+          });
+      });
     if (indexBulletToDelete != undefined) {
       this.bulletsInGame.splice(indexBulletToDelete, 1);
     }
