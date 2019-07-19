@@ -21,15 +21,18 @@ body {
 .notdisplay {
   display: none;
 }
-#button {
-  color: white;
-}
+
 #welcomescreen {
+  background: url(../images/breakout.jpg) center no-repeat;
+  /* width: 504px; */
+  height: 500px;
   text-align: center;
-  padding-top: 100px;
+  margin-top: 50px;
 }
 #welcomescreen img {
-  width: 600px;
+  width: 389px;
+  padding-top: 203px;
+  margin-right: 45px;
 }
 .header {
   color: white;
@@ -43,16 +46,18 @@ body {
   margin-top: 50px;
 }
 #button {
+  color: white;
   font-family: MyGame;
   font-size: 30px;
   cursor: pointer;
+  margin-right: 20px;
 }
 .pause {
   position: relative;
   top: 100p;
   background-color: black;
   color: white;
-  width: 40%;
+  width: 400px;
   margin: 0 auto;
   top: -360px;
   border: 2px dotted;

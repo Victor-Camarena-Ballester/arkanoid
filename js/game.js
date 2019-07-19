@@ -41,7 +41,8 @@ class Game {
       this.refreshTimer,
       this.gameOver,
       this.stageNumber,
-      this.bulletsInGame
+      this.bulletsInGame,
+      actualStage.options.columnsHidden
     );
     this.stage.createStage();
 
@@ -50,17 +51,22 @@ class Game {
     }
     setTimeout(this._volumeUP, 2500);
   }
+
   _volumeUP() {
     document.getElementById("mainMusic").volume = 0.8;
   }
 
   _winGame() {
+    this.gameState = "win";
+
     this.stage.pauseChrono();
+    cancelAnimationFrame(this.intervalGame);
     this.intervalGame = undefined;
     this.win();
   }
 
   startGame() {
+    this.gameState = "running";
     this._addListeners();
     this._setCurrentStage();
 
@@ -70,16 +76,24 @@ class Game {
   }
 
   pauseGame() {
-    document.getElementById("mainMusic").pause();
-    this.stage.pauseChrono();
-    this.intervalGame = undefined;
-    this.pause();
+    if (this.gameState === "running") {
+      this.gameState = "paused";
+      document.getElementById("mainMusic").pause();
+      this.stage.pauseChrono();
+      cancelAnimationFrame(this.intervalGame);
+      this.intervalGame = undefined;
+      this.pause();
+    }
   }
 
   gameOver() {
-    document.getElementById("mainMusic").stop();
+    this.gameState = "loose";
+    document.getElementById("mainMusic").pause();
+    document.getElementById("mainMusic").currentTime = 0.0;
 
-    this.pauseGame();
+    this.stage.pauseChrono();
+    this.intervalGame = undefined;
+
     this.loose();
 
     let audioN = new Audio("music/Track4.mp3");
@@ -87,12 +101,15 @@ class Game {
   }
 
   reestartGame() {
-    document.getElementById("mainMusic").play();
-    this.intervalGame = window.requestAnimationFrame(
-      this._refreshScreen.bind(this)
-    );
-    this.stage.reestartChrono();
-    this.reestart();
+    if (this.gameState === "paused") {
+      this.gameState = "running";
+      document.getElementById("mainMusic").play();
+      this.intervalGame = window.requestAnimationFrame(
+        this._refreshScreen.bind(this)
+      );
+      this.stage.reestartChrono();
+      this.reestart();
+    }
   }
 
   _cleanScreen() {
@@ -247,18 +264,20 @@ class Game {
   }
 
   _refreshScreen() {
-    this._checkStageTime();
-    this._cleanScreen();
-    this._checkAllCollissions();
-    this._printField();
-    this._printBall();
-    this._printShip();
-    this._printBlocks();
-    this._printPresents();
-    this._printBullets();
+    if (this.gameState === "running") {
+      this._checkStageTime();
+      this._cleanScreen();
+      this._checkAllCollissions();
+      this._printField();
+      this._printBall();
+      this._printShip();
+      this._printBlocks();
+      this._printPresents();
+      this._printBullets();
 
-    if (this.intervalGame !== undefined) {
-      window.requestAnimationFrame(this._refreshScreen.bind(this));
+      if (this.intervalGame !== undefined) {
+        window.requestAnimationFrame(this._refreshScreen.bind(this));
+      }
     }
   }
 
@@ -344,7 +363,7 @@ class Game {
       }
     });
     if (indexToDelete != undefined) {
-      this.presentsInGame[indexToDelete].intervalRolling = undefined;
+      this.presentsInGame[indexToDelete].stopRolling();
       this.presentsInGame.splice(indexToDelete, 1);
     }
   }
@@ -380,7 +399,7 @@ class Game {
       }
     });
     if (indexToDelete != undefined) {
-      this.presentsInGame[indexToDelete].intervalRolling = undefined;
+      this.presentsInGame[indexToDelete].stopRolling();
       this.presentsInGame.splice(indexToDelete, 1);
     }
   }
@@ -390,7 +409,7 @@ class Game {
       return block.strength > 0;
     });
 
-    if (count.length === 0) {
+    if (count.length === 0 && this.gameState === "running") {
       this.stage.pauseChrono();
       this.stageNumber += 1;
       this.presentsInGame = [];

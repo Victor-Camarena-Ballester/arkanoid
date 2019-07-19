@@ -22,7 +22,8 @@ const presentsArr = [
       dy: 399,
       dw: 44,
       dh: 22
-    }
+    },
+    startPosition: 0
   },
   {
     type: "s-",
@@ -34,7 +35,8 @@ const presentsArr = [
       dy: 445,
       dw: 44,
       dh: 22
-    }
+    },
+    startPosition: 352
   },
   {
     type: "w+",
@@ -46,7 +48,8 @@ const presentsArr = [
       dy: 327,
       dw: 44,
       dh: 22
-    }
+    },
+    startPosition: 0
   },
   {
     type: "w-",
@@ -58,7 +61,8 @@ const presentsArr = [
       dy: 424,
       dw: 44,
       dh: 22
-    }
+    },
+    startPosition: 0
   },
   {
     type: "IronHack",
@@ -70,20 +74,39 @@ const presentsArr = [
       dy: 496,
       dw: 44,
       dh: 22
-    }
+    },
+    startPosition: 352
   }
 ];
 const stagesArr = [
   {
     stageNum: 1,
-    options: { rows: 4, columnWidth: 70, speedBall: 5, countDown: 5 * 60 }
+    options: {
+      rows: 4,
+      columnWidth: 70,
+      speedBall: 5,
+      countDown: 5 * 60,
+      columnsHidden: [3]
+    }
   },
   {
     stageNum: 2,
-    options: { rows: 5, columnWidth: 70, speedBall: 5, countDown: 6 * 60 }
+    options: {
+      rows: 6,
+      columnWidth: 70,
+      speedBall: 5,
+      countDown: 4 * 60,
+      columnsHidden: [1, 5]
+    }
   },
   {
     stageNum: 3,
-    options: { rows: 6, columnWidth: 70, speedBall: 5, countDown: 7 * 60 }
+    options: {
+      rows: 7,
+      columnWidth: 70,
+      speedBall: 5,
+      countDown: 3 * 60,
+      columnsHidden: [2, 4]
+    }
   }
 ];

@@ -8,7 +8,8 @@ class Stage {
     refreshTimer,
     gameOver,
     stageNumber,
-    bulletsInGame
+    bulletsInGame,
+    columnsHidden
   ) {
     this.canvas = canvas;
     this.rows = rows;
@@ -27,6 +28,7 @@ class Stage {
     this.intervalBullets = undefined;
     this.countTimerBullets = 0;
     this.isShoothing = false;
+    this.columnsHidden = columnsHidden;
   }
 
   createStage() {
@@ -76,7 +78,11 @@ class Stage {
     for (let i = 0; i < rows; i++) {
       let firstX = 45;
       for (let c = 0; c < columns; c++) {
-        if (c != 3) {
+        if (
+          !this.columnsHidden.includes(c) ||
+          (this.stageNumber === 3 && i + 2 >= rows) ||
+          (this.stageNumber === 2 && i === 0)
+        ) {
           let blockPositionX = c * this.columnWidth + spaceBetween + firstX;
           let blockPositionY = i * 30 + spaceBetween + firstY;
           let blockWidth = this.columnWidth - spaceBetween;
@@ -192,10 +198,16 @@ class Stage {
   }
 
   _startMoveBlocks() {
-    if (this.stageNumber > 1) {
+    if (this.stageNumber === 2) {
       this.intervalBlocksDown = setInterval(
         this.moveBlocksDown.bind(this),
-        8000
+        7000
+      );
+    }
+    if (this.stageNumber === 3) {
+      this.intervalBlocksDown = setInterval(
+        this.moveBlocksDown.bind(this),
+        5000
       );
     }
   }

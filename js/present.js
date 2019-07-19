@@ -11,7 +11,7 @@ class Present {
     this.imageUrl = options.imageUrl;
     this.imgPosition = options.imgPosition;
     this.intervalRolling = undefined;
-    this.startPosition = 0;
+    this.startPosition = options.startPosition;
   }
   moveDown() {
     this.positionY += this.speed;
@@ -19,7 +19,6 @@ class Present {
   }
   startRolling() {
     if (this.intervalRolling === undefined) {
-      this.startPosition = this.imgPosition.dx;
       this.intervalRolling = setInterval(this._rollPresent.bind(this), 110);
     }
   }
@@ -29,5 +28,9 @@ class Present {
     } else {
       this.imgPosition.dx += this.imgPosition.dw;
     }
+  }
+  stopRolling() {
+    clearInterval(this.intervalRolling);
+    this.intervalRolling = undefined;
   }
 }
