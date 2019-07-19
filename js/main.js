@@ -21,8 +21,8 @@ function loose() {
 function win() {
   winscreen.classList.toggle("notdisplay");
   canvas.classList.add("opacity5");
-
-  audioWin.play();
+  let audioN = new Audio("music/Track1.mp3");
+  audioN.play();
 }
 function showlives(livesNumber) {
   document.getElementById("lives").innerHTML = livesNumber;

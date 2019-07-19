@@ -95,8 +95,9 @@ class Game {
     this.intervalGame = undefined;
 
     this.loose();
-    audioGameOver2.play();
-    audioGameOver.play();
+
+    let audioN = new Audio("music/Track4.mp3");
+    audioN.play();
   }
 
   reestartGame() {
@@ -324,6 +325,7 @@ class Game {
       if (this.lives === 0) {
         this.showlives(this.lives);
         this.gameOver();
+        this._gameOverSound();
       } else {
         this._liveLostSound();
         this.showlives(this.lives);
@@ -561,12 +563,19 @@ class Game {
   }
 
   _bulletCrashedSound() {
-    audioBulletCrasehd.play();
+    let audioN = new Audio("music/SFX 10.mp3");
+    audioN.play();
   }
   _bounceSound() {
-    audioBounce.play();
+    let audioN = new Audio("music/SFX 6.mp3");
+    audioN.play();
   }
   _liveLostSound() {
-    audioLiveLost.play();
+    let audioN = new Audio("music/SFX 2.mp3");
+    audioN.play();
+  }
+  _gameOverSound() {
+    let audioN = new Audio("music/6 - Track 6.mp3");
+    audioN.play();
   }
 }
