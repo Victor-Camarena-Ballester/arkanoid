@@ -15,7 +15,7 @@ const audioGameOver = new Audio("music/Track4.mp3");
 const audioBounce = new Audio("music/SFX 6.mp3");
 const audioBulletCrasehd = new Audio("music/SFX 10.mp3");
 const audioLiveLost = new Audio("music/SFX 2.mp3");
-const audioGameOver = new Audio("music/6 - Track 6.mp3");
+const audioGameOver2 = new Audio("music/6 - Track 6.mp3");
 
 const presentsArr = [
   { type: "n", speed: 0, color: "", imageUrl: imgSprites },

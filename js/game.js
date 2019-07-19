@@ -95,7 +95,7 @@ class Game {
     this.intervalGame = undefined;
 
     this.loose();
-
+    audioGameOver2.play();
     audioGameOver.play();
   }
 
